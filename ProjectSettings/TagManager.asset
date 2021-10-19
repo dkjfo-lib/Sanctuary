@@ -22,6 +22,8 @@ TagManager:
   - Sight
   - GrounDetector
   - Player
+  - water
+  - waterCollider
   - 
   - 
   - 
@@ -36,8 +38,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - dont collide
   m_SortingLayers:
   - name: Default
     uniqueID: 0
