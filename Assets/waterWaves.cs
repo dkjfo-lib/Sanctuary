@@ -29,8 +29,9 @@ public class waterWaves : MonoBehaviour
         {
             if (verts[i].y > yFreshhold)
             {
-                float posXZ = verts[i].x + verts[i].z + transform.position.x + transform.position.z;
-                verts[i].y = Mathf.Sin(posXZ * wavesDencity * Mathf.PI + wavesOffset) * wavesAmplitude;
+                float posXZ = verts[i].x + verts[i].z;
+                float offset = posXZ * wavesDencity + wavesOffset;
+                verts[i].y = Mathf.Sin(offset * Mathf.PI) * wavesAmplitude;
             }
         }
         MeshFilter.mesh.vertices = verts;
