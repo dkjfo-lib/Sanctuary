@@ -271,4 +271,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraSensitivity: {fileID: 11400000, guid: a19678878ba481b4b95667bf1af99168, type: 2}
-  limitAngle: 40
+  limitAngle: 70

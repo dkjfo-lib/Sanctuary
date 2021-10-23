@@ -25,4 +25,6 @@ public class GroundDetector : MonoBehaviour
     {
         staysOnGround = false;
     }
+
+    
 }

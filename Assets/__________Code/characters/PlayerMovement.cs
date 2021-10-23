@@ -15,26 +15,31 @@ public class PlayerMovement : MonoBehaviour, IMovement
     [Space]
     public Pipe_SoundsPlay Addon_Pipe_SoundsPlay;
     public ClipsCollection Addon_stepSound;
+    [Space]
+    public GroundDetector Addon_WaterDetector;
+    [Range(0, 1)] public float Addon_speedMultInWater = .98f;
+    [Range(0, 1)] public float Addon_controlInWater = .2f;
+    [Range(0, 1)] public float Addon_jumpForceInWater = .2f;
 
-    Rigidbody rb;
-    GroundDetector gd;
+    Rigidbody Rigidbody;
+    GroundDetector GroundDetector;
 
     Vector4 input;
     public Vector3 CurrentInput => input;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        gd = GetComponentInChildren<GroundDetector>();
-        rb.centerOfMass = Vector3.zero;
-        //StartCoroutine(SoundWalking());
+        Rigidbody = GetComponent<Rigidbody>();
+        Rigidbody.centerOfMass = Vector3.zero;
+        GroundDetector = GetComponentInChildren<GroundDetector>();
+        StartCoroutine(SoundWalking());
     }
 
     IEnumerator SoundWalking()
     {
         while (true)
         {
-            yield return new WaitUntil(() => gd.onGround && rb.velocity.sqrMagnitude > 4f);
+            yield return new WaitUntil(() => GroundDetector.onGround && Rigidbody.velocity.sqrMagnitude > 4f);
             if (Addon_Pipe_SoundsPlay != null && Addon_stepSound != null)
                 Addon_Pipe_SoundsPlay.AddClip(new PlayClipData(Addon_stepSound, Camera.main.transform.position, Camera.main.transform));
             yield return new WaitForSeconds(.25f);
@@ -45,7 +50,7 @@ public class PlayerMovement : MonoBehaviour, IMovement
     {
         var input = CreateInput();
 
-        if (gd.onGround)
+        if (GroundDetector.onGround)
         {
             // move xz
             if (input.x != 0 || input.z != 0)
@@ -53,20 +58,40 @@ public class PlayerMovement : MonoBehaviour, IMovement
                 var inputXZ = new Vector3(input.x, 0, input.z).normalized;
                 var localInputXZ = inputXZ.x * transform.right + inputXZ.z * transform.forward;
                 var addMovementXZ = localInputXZ * speed * Time.fixedDeltaTime;
-                var newMovementXZ = rb.velocity + addMovementXZ;
-                rb.velocity = newMovementXZ;
+                var newMovementXZ = Rigidbody.velocity + addMovementXZ;
+                Rigidbody.velocity = newMovementXZ;
             }
-            if (input.w != 0)
-            {
-                transform.Rotate(Vector3.up, input.w * torque * Time.fixedDeltaTime);
-                //rb.AddTorque(new Vector3(0, input.w * torque * Time.fixedDeltaTime, 0), ForceMode.Acceleration);
-            }
-            rb.velocity = new Vector3(rb.velocity.x * speedMult, rb.velocity.y, rb.velocity.z * speedMult);
+            Rigidbody.velocity = new Vector3(Rigidbody.velocity.x * speedMult, Rigidbody.velocity.y, Rigidbody.velocity.z * speedMult);
+            // rotate
+            //if (input.w != 0)
+            //{
+            //    transform.Rotate(Vector3.up, input.w * torque * Time.fixedDeltaTime);
+            //    //rb.AddTorque(new Vector3(0, input.w * torque * Time.fixedDeltaTime, 0), ForceMode.Acceleration);
+            //}
             // move y
             if (input.y != 0)
             {
                 var movementY = input.y * jumpForce;
-                rb.velocity = new Vector3(rb.velocity.x, movementY, rb.velocity.z);
+                Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, movementY, Rigidbody.velocity.z);
+            }
+        }
+        else if (Addon_WaterDetector != null && Addon_WaterDetector.onGround)
+        {
+            // move xz
+            if (input.x != 0 || input.z != 0)
+            {
+                var inputXZ = new Vector3(input.x, 0, input.z).normalized;
+                var localInputXZ = inputXZ.x * transform.right + inputXZ.z * transform.forward;
+                var addMovementXZ = localInputXZ * speed * Time.fixedDeltaTime * Addon_controlInWater;
+                var newMovementXZ = Rigidbody.velocity + addMovementXZ;
+                Rigidbody.velocity = newMovementXZ;
+            }
+            Rigidbody.velocity = new Vector3(Rigidbody.velocity.x * Addon_speedMultInWater, Rigidbody.velocity.y, Rigidbody.velocity.z * Addon_speedMultInWater);
+            // move y
+            if (input.y != 0)
+            {
+                var movementY = input.y * jumpForce * Addon_jumpForceInWater;
+                Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, movementY, Rigidbody.velocity.z);
             }
         }
         else
@@ -77,10 +102,10 @@ public class PlayerMovement : MonoBehaviour, IMovement
                 var inputXZ = new Vector3(input.x, 0, input.z).normalized;
                 var localInputXZ = inputXZ.x * transform.right + inputXZ.z * transform.forward;
                 var addMovementXZ = localInputXZ * speed * Time.fixedDeltaTime * controlInAir;
-                var newMovementXZ = rb.velocity + addMovementXZ;
-                rb.velocity = newMovementXZ;
+                var newMovementXZ = Rigidbody.velocity + addMovementXZ;
+                Rigidbody.velocity = newMovementXZ;
             }
-            rb.velocity = new Vector3(rb.velocity.x * speedMultInAir, rb.velocity.y, rb.velocity.z * speedMultInAir);
+            Rigidbody.velocity = new Vector3(Rigidbody.velocity.x * speedMultInAir, Rigidbody.velocity.y, Rigidbody.velocity.z * speedMultInAir);
         }
     }
 
