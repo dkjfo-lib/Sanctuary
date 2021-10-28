@@ -16,6 +16,7 @@ public class ProceduralGrass : MonoBehaviour
     Vector2Int size;
 
     CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
+    //YieldInstruction pause = new WaitForEndOfFrame();
 
     void Update()
     {

@@ -12,7 +12,8 @@ public class ProceduralIsland : MonoBehaviour, ILoading
     [Range(0, 1)] public float stepXZ = .3f;
     public ProceduralGrass IslandChunkPrefab;
 
-    CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
+    //CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
+    YieldInstruction pause = new WaitForEndOfFrame();
     int offsetX;
     int offsetY;
 
