@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +9,13 @@ public class ProceduralGrass : MonoBehaviour
     public float valueY;
     public float dotValue;
     public float offsetY = -.1f;
+    [Range(0, 90)] public float angleLimit = 25;
     [Space]
     public bool regen = false;
 
     Vector2Int size;
 
-    CustomYieldInstruction pause = new WaitForSecondsRealtime(.3f);
+    CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
 
     void Update()
     {
@@ -46,7 +46,12 @@ public class ProceduralGrass : MonoBehaviour
                     if (transform.position.y + mesh.vertices[i].y > valueY)
                     {
                         loadCount += 100;
-                        var newGrass = Instantiate(GrassPrefab, transform.position + mesh.vertices[i] + Vector3.up * offsetY, Quaternion.LookRotation(mesh.normals[i]), transform);
+                        var rotation = Quaternion.Euler(
+                            Random.Range(-angleLimit, angleLimit) - 90,
+                            Random.Range(0, 360),
+                            Random.Range(-angleLimit, angleLimit) - 90
+                            );
+                        Instantiate(GrassPrefab, transform.position + mesh.vertices[i] + Vector3.up * offsetY, rotation, transform);
                     }
                     else
                     {
@@ -81,7 +86,6 @@ public class ProceduralGrass : MonoBehaviour
 
         var grassMasterGO = new GameObject("Grass");
         grassMasterGO.transform.parent = transform;
-        //grassMasterGO.transform.localPosition = Vector3.zero;
 
         var grassMasterMesh = grassMasterGO.AddComponent<MeshFilter>();
         grassMasterMesh.mesh = new Mesh();
@@ -100,20 +104,5 @@ public class ProceduralGrass : MonoBehaviour
     {
         this.size = size;
         yield return Generate();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //var mesh = mf.mesh;
-        //for (int i = 0, x = 0; x < size.x + 1; x++)
-        //{
-        //    for (int z = 0; z < size.y + 1; z++)
-        //    {
-        //        Vector3 normal = mesh.normals[i];
-        //        Vector3 position = mesh.vertices[i];
-        //        Gizmos.DrawLine(transform.position + position, transform.position + position + normal);
-        //        i += 1;
-        //    }
-        //}
     }
 }

@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class ProceduralIsland : MonoBehaviour, ILoading
 {
-    public Vector2Int size;
+    readonly int chunkSize = 50;
+
+    public Vector2Int islandChunkSize;
     public float height;
     [Range(0, 1)] public float stepXZ = .3f;
-    public Vector2Int offset;
-    public ProceduralGrass ADDON_grass;
+    public ProceduralGrass IslandChunkPrefab;
 
-    MeshFilter mf;
-    MeshCollider mc;
+    CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
+    int offsetX;
+    int offsetY;
 
-    CustomYieldInstruction pause = new WaitForSecondsRealtime(.3f);
+    Vector2Int size => islandChunkSize * chunkSize;
 
     public IEnumerator LoadingRoutine()
     {
-        mf = GetComponent<MeshFilter>();
-        mc = GetComponent<MeshCollider>();
         yield return StartCoroutine(Generate());
     }
 
     IEnumerator Generate()
     {
         {
-            offset.x = Random.Range(0, 2024);
-            offset.y = Random.Range(0, 2024);
+            offsetX = Random.Range(0, 2024);
+            offsetY = Random.Range(0, 2024);
             transform.position = new Vector3(
                 -size.x / 2f,
                 -height / 2f,
@@ -35,88 +35,79 @@ public class ProceduralIsland : MonoBehaviour, ILoading
                 );
         }
         yield return pause;
-        //for (int i = 0; i < 2; i++)
         {
-            Mesh subMesh = new Mesh();
-            yield return StartCoroutine(CreateMesh(subMesh));
-            //var combine = new CombineInstance
-            //{
-            //    mesh = subMesh,
-            //    transform = transform.localToWorldMatrix
-            //};
-            //mf.mesh.CombineMeshes(combine);
-        }
-        //throw new System.Exception();
-        if (ADDON_grass != null)
-        {
-            yield return ADDON_grass.Generate(size);
+            for (int y = 0; y < islandChunkSize.y; y++)
+            {
+                for (int x = 0; x < islandChunkSize.x; x++)
+                {
+                    Mesh subMesh = new Mesh();
+                    subMesh.name = "island chunk";
+                    yield return StartCoroutine(CreateMesh(subMesh, x * chunkSize, y * chunkSize, (x + 1) * chunkSize, (y + 1) * chunkSize));
+                    var newChunk = Instantiate(IslandChunkPrefab, transform.position, Quaternion.identity, transform);
+                    newChunk.GetComponent<MeshFilter>().mesh = subMesh;
+                    newChunk.GetComponent<MeshCollider>().sharedMesh = subMesh;
+                    StartCoroutine(newChunk.GetComponent<ProceduralGrass>().Generate(new Vector2Int(chunkSize, chunkSize)));
+                }
+            }
         }
     }
 
-    IEnumerator CreateMesh(Mesh mesh)
+    IEnumerator CreateMesh(Mesh mesh, int startX, int startY, int sizeX, int sizeY)
     {
-        int verticesCount = (size.x + 1) * (size.y + 1);
         {
-            mesh.vertices = GetVertices(size.x, size.y);
+            mesh.vertices = GetVertices(startX, startY, sizeX, sizeY);
         }
         yield return pause;
         {
-            mesh.triangles = GetTriangles(size.x, size.y);
+            mesh.triangles = GetTriangles(startX, startY, sizeX, sizeY);
         }
         yield return pause;
         {
             mesh.uv = mesh.vertices.Select(meshVertex => new Vector2(meshVertex.x / size.x, meshVertex.z / size.y)).ToArray();
         }
         yield return pause;
-        {
-            mesh.normals = mesh.vertices.Select(meshVertex => Vector3.up).ToArray();
-        }
-        yield return pause;
-        mf.mesh = mesh;
-        mc.sharedMesh = mesh;
-        //mesh.RecalculateNormals();
+        //{
+        //    mesh.normals = mesh.vertices.Select(meshVertex => Vector3.up).ToArray();
+        //}
+        //yield return pause;
+        mesh.RecalculateNormals();
     }
 
-    private Vector3[] GetVertices(int sizeX, int sizeY)
+    private Vector3[] GetVertices(int startX, int startY, int sizeX, int sizeY)
     {
-        Vector3[] vertices = new Vector3[(sizeX + 1) * (sizeY + 1)];
-        for (int i = 0, z = 0; z < sizeY + 1; z++)
+        Vector3[] vertices = new Vector3[((sizeX - startX) + 1) * ((sizeY - startY) + 1)];
+        for (int i = 0, z = startY; z < sizeY + 1; z++)
         {
-            for (int x = 0; x < sizeX + 1; x++)
+            for (int x = startX; x < sizeX + 1; x++)
             {
                 var y = GetY(z, x);
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
         }
-
         return vertices;
     }
 
-    private int[] GetTriangles(int sizeX, int sizeY)
+    private int[] GetTriangles(int startX, int startY, int sizeX, int sizeY)
     {
-        int[] triangles = new int[sizeX * sizeY * 6];
-        int loadCount = 0;
-        for (int vert = 0, tris = 0, y = 0; y < sizeY; y++)
+        var _SizeX = sizeX - startX;
+        var _SizeY = sizeY - startY;
+        int[] triangles = new int[_SizeX * _SizeY * 6];
+        for (int vert = 0, tris = 0, y = 0; y < _SizeY; y++)
         {
-            for (int x = 0; x < sizeX; x++)
+            for (int x = 0; x < _SizeX; x++)
             {
                 triangles[tris + 0] = vert + 0;
-                triangles[tris + 1] = vert + sizeX + 1;
+                triangles[tris + 1] = vert + _SizeX + 1;
                 triangles[tris + 2] = vert + 1;
                 triangles[tris + 3] = vert + 1;
-                triangles[tris + 4] = vert + sizeX + 1;
-                triangles[tris + 5] = vert + sizeX + 2;
+                triangles[tris + 4] = vert + _SizeX + 1;
+                triangles[tris + 5] = vert + _SizeX + 2;
 
                 vert += 1;
                 tris += 6;
-                loadCount += 1;
             }
             vert += 1;
-            if (loadCount >= 5000)
-            {
-                loadCount = 0;
-            }
         }
 
         return triangles;
@@ -131,7 +122,8 @@ public class ProceduralIsland : MonoBehaviour, ILoading
 
         float defValXZ = (.25f - (normX - .5f) * (normX - .5f)) * (.25f - (normZ - .5f) * (normZ - .5f)) * 8;
 
-        float noise1 = Mathf.PerlinNoise(offset.x + normX, offset.y + normZ);
+
+        float noise1 = Mathf.PerlinNoise(offsetX + normX, offsetY + normZ);
         float noise2 = Mathf.PerlinNoise(x * stepXZ, z * stepXZ);
         float noise = (noise1 + noise2) / 2;
 
@@ -139,17 +131,5 @@ public class ProceduralIsland : MonoBehaviour, ILoading
 
         float y = finValue;
         return y * height;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //for (int z = 0; z < size.y + 1; z++)
-        //{
-        //    for (int x = 0; x < size.x + 1; x++)
-        //    {
-        //        var y = GetY(z, x);
-        //        Gizmos.DrawLine(new Vector3(x, 0, z), new Vector3(x, y, z));
-        //    }
-        //}
     }
 }
