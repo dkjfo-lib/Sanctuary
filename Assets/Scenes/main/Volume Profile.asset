@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 872866160321362159}
   - {fileID: 1021493394919837441}
   - {fileID: 4960494843511536477}
+  - {fileID: 4231782851068895246}
 --- !u!114 &872866160321362159
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -36,11 +37,11 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 2.2
     min: 0
   scatter:
-    m_OverrideState: 0
-    m_Value: 0.7
+    m_OverrideState: 1
+    m_Value: 0.25
     min: 0
     max: 1
   clamp:
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   temperature:
     m_OverrideState: 1
-    m_Value: -14
+    m_Value: -16.54
     min: -100
     max: 100
   tint:
@@ -92,6 +93,42 @@ MonoBehaviour:
     m_Value: 9
     min: -100
     max: 100
+--- !u!114 &4231782851068895246
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.2
+    min: 0
+    max: 1
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.1
+    min: 0.01
+    max: 1
+  rounded:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &4960494843511536477
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -119,17 +156,17 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
-          outSlope: 1
+          inSlope: 0.56021655
+          outSlope: 0.56021655
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.85703063
-          value: 0.8974359
-          inSlope: 0.7177982
-          outSlope: 0.7177982
+          time: 0.9169929
+          value: 0.9196584
+          inSlope: 1.608456
+          outSlope: 1.608456
           tangentMode: 0
           weightedMode: 0
           inWeight: 0

@@ -88,7 +88,7 @@ Material:
     - Vector1_6dc1f1916f3840d5b2a731743e641cc9: 1
     - Vector1_8a5fa70a1e964b73b144aa2033a406a0: 1
     - _AlphaClip: 0
-    - _AtmosphereThickness: 1
+    - _AtmosphereThickness: 0.71
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -113,7 +113,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunDisk: 2
-    - _SunSize: 0.04
+    - _SunSize: 0.2
     - _SunSizeConvergence: 5
     - _Surface: 0
     - _WorkflowMode: 1
@@ -124,8 +124,8 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SkyTint: {r: 0.3884656, g: 0.50131416, b: 0.5849056, a: 1}
+    - _GroundColor: {r: 0.63529414, g: 0.9960785, b: 0.9960785, a: 1}
+    - _SkyTint: {r: 0.6036846, g: 0.7733588, b: 0.8962264, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8726927896529302014
