@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4207754886117741063}
   - component: {fileID: 2051042253757829280}
   - component: {fileID: 532097613354135412}
+  - component: {fileID: 4335487093644042195}
   m_Layer: 6
   m_Name: IslandChunk
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e0279b38fb1424b8d20aa41a02967e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ProceduralTrees: {fileID: 4335487093644042195}
   GrassPrefab: {fileID: 5550651753066510959, guid: 334934feaed76a0458f70946b88ddb2f, type: 3}
   GrassMaterial: {fileID: 2100000, guid: 492a086f36512a64fbced7f95c93ba36, type: 2}
   valueY: -1.62
@@ -116,3 +118,19 @@ MonoBehaviour:
   offsetY: -0.05
   angleLimit: 25
   shadowMode: 1
+--- !u!114 &4335487093644042195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432779013230128695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e4a7bdc8ad7e874aa75c873bcc52415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treePrefab: {fileID: 2345842809947955934, guid: a377318993b594046b8e93fb18ed5299, type: 3}
+  treesSpawnHeight: 0
+  offsetY: {x: 1, y: 3}
+  angleLimit: 20

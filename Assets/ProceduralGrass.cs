@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 
 public class ProceduralGrass : MonoBehaviour
 {
+    public ProceduralTrees ProceduralTrees;
+    [Space]
     public Transform GrassPrefab;
     public Material GrassMaterial;
     [Space]
@@ -25,6 +27,7 @@ public class ProceduralGrass : MonoBehaviour
     {
         yield return StartCoroutine(InstantiateGrassMeshes());
         yield return StartCoroutine(CombineMeshes());
+        yield return StartCoroutine(ProceduralTrees.SpawnTrees());
     }
 
     IEnumerator InstantiateGrassMeshes()
