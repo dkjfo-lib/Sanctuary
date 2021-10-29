@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1: 0.95
+    - Vector1_1: 0.9
     - Vector1_18ac46356fb64186b8b8307fd038c89e: 2
     - Vector1_20b94357779b44c0b266724f836dd662: 1
     - Vector1_234183dbbefe41b0997f34c9fb15efd4: 10
@@ -64,9 +64,9 @@ Material:
     - Vector1_4a8cec3b44d14851bcde418cd6a2d2c9: 1
     - Vector1_4c351d9aa1ef4aa9bf62397884a8d4ce: 1
     - Vector1_4cc134101efe4d3ca6c024261c55eb16: 0.16
-    - Vector1_63c8a5d90c2643a58fdc4e56d444443a: 3
+    - Vector1_63c8a5d90c2643a58fdc4e56d444443a: 5
     - Vector1_7e024231d3164f1abba4ed784b2abbe1: 2.56
-    - Vector1_860f0417bbde4e2085005f1c174c431e: 0.3
+    - Vector1_860f0417bbde4e2085005f1c174c431e: 0.4
     - Vector1_96c00e4925554c5482df0da8c5e5271b: 0.5
     - Vector1_9ca4ba7f208d4979a403b8695e8adf40: 6.2
     - Vector1_9ffabce45ff5461393b8e236f41f9470: 10
@@ -81,7 +81,7 @@ Material:
     - Vector1_fb467d0a92144a2eb5a0b7d209a3f8f6: 0.05
     - _Depth: 0.11
     - _Strength: 0
-    - _Strength_1: 0.04
+    - _Strength_1: 0.02
     m_Colors:
     - Color_1: {r: 1, g: 1, b: 1, a: 1}
     - Color_60cd1bd29962495d924e0d7e0b502a39: {r: 0.45098042, g: 0.9282525, b: 1, a: 0.29803923}

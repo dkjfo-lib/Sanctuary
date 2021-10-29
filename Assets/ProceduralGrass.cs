@@ -1,37 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ProceduralGrass : MonoBehaviour
 {
     public Transform GrassPrefab;
     public Material GrassMaterial;
+    [Space]
     public float valueY;
     public float dotValue;
+    [Space]
     public float offsetY = -.1f;
     [Range(0, 90)] public float angleLimit = 25;
     [Space]
-    public bool regen = false;
+    public ShadowCastingMode shadowMode = ShadowCastingMode.Off;
 
     Vector2Int size;
 
     CustomYieldInstruction pause = new WaitForSecondsRealtime(.1f);
     //YieldInstruction pause = new WaitForEndOfFrame();
 
-    void Update()
-    {
-        if (regen)
-        {
-            StartCoroutine(Generate());
-            regen = false;
-        }
-    }
-
     IEnumerator Generate()
     {
         yield return StartCoroutine(InstantiateGrassMeshes());
         yield return StartCoroutine(CombineMeshes());
-        //throw new Exception();
     }
 
     IEnumerator InstantiateGrassMeshes()
@@ -94,9 +87,9 @@ public class ProceduralGrass : MonoBehaviour
 
         var grassMasterMeshRenderer = grassMasterGO.AddComponent<MeshRenderer>();
         grassMasterMeshRenderer.material = GrassMaterial;
-        grassMasterMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        grassMasterMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-        grassMasterMeshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+        grassMasterMeshRenderer.shadowCastingMode = shadowMode;
+        grassMasterMeshRenderer.lightProbeUsage = LightProbeUsage.Off;
+        grassMasterMeshRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
 
         grassMasterGO.SetActive(true);
     }

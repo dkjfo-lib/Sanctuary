@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &620746921374361594
 Transform:
@@ -115,4 +115,4 @@ MonoBehaviour:
   dotValue: 0.9
   offsetY: -0.05
   angleLimit: 25
-  regen: 0
+  shadowMode: 1
