@@ -13,9 +13,6 @@ public class PlayerMovement : MonoBehaviour, IMovement
     [Range(0, 1)] public float controlInAir = .2f;
     public float jumpForce = 200;
     [Space]
-    public Pipe_SoundsPlay Addon_Pipe_SoundsPlay;
-    public ClipsCollection Addon_stepSound;
-    [Space]
     public GroundDetector Addon_WaterDetector;
     [Range(0, 1)] public float Addon_speedMultInWater = .98f;
     [Range(0, 1)] public float Addon_controlInWater = .2f;
@@ -27,24 +24,15 @@ public class PlayerMovement : MonoBehaviour, IMovement
     bool wasInAir = false;
     Vector4 input;
     public Vector3 CurrentInput => input;
+    public Vector3 Velocity => Rigidbody.velocity;
+    public bool OnGround => GroundDetector.onGround;
+    public bool InWater => !GroundDetector.onGround && Addon_WaterDetector.onGround;
 
-    private void Start()
+    private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
         Rigidbody.centerOfMass = Vector3.zero;
         GroundDetector = GetComponentInChildren<GroundDetector>();
-        StartCoroutine(SoundWalking());
-    }
-
-    IEnumerator SoundWalking()
-    {
-        while (true)
-        {
-            yield return new WaitUntil(() => GroundDetector.onGround && Rigidbody.velocity.sqrMagnitude > 4f);
-            if (Addon_Pipe_SoundsPlay != null && Addon_stepSound != null)
-                Addon_Pipe_SoundsPlay.AddClip(new PlayClipData(Addon_stepSound, Camera.main.transform.position, Camera.main.transform));
-            yield return new WaitForSeconds(.25f);
-        }
     }
 
     void Update()
@@ -147,4 +135,7 @@ public class PlayerMovement : MonoBehaviour, IMovement
 public interface IMovement
 {
     Vector3 CurrentInput { get; }
+    Vector3 Velocity { get; }
+    bool OnGround { get; }
+    bool InWater { get; }
 }

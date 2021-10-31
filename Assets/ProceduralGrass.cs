@@ -68,14 +68,14 @@ public class ProceduralGrass : MonoBehaviour
     IEnumerator CombineMeshes()
     {
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        CombineInstance[] combine = new CombineInstance[meshFilters.Length - 1];
         {
-            int i = 1;
-            while (i < meshFilters.Length)
+            int i = 0;
+            while (i < combine.Length)
             {
-                combine[i].mesh = meshFilters[i].sharedMesh;
-                combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-                Destroy(meshFilters[i].gameObject);
+                combine[i].mesh = meshFilters[i + 1].sharedMesh;
+                combine[i].transform = meshFilters[i + 1].transform.localToWorldMatrix;
+                Destroy(meshFilters[i + 1].gameObject);
                 i++;
             }
             yield return pause;
