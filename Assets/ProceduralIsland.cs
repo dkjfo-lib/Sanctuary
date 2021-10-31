@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ProceduralIsland : MonoBehaviour, ILoading
 {
-    readonly int chunkSize = 50;
+    public readonly int chunkSize = 50;
 
     public Vector2Int islandChunkSize;
     public float height;
@@ -24,12 +24,12 @@ public class ProceduralIsland : MonoBehaviour, ILoading
         yield return StartCoroutine(Generate());
     }
 
-    IEnumerator Generate()
+    internal IEnumerator Generate()
     {
         {
             offsetX = Random.Range(0, 2024);
             offsetY = Random.Range(0, 2024);
-            transform.position = new Vector3(
+            transform.position += new Vector3(
                 -size.x / 2f,
                 -height / 2f,
                 -size.y / 2f
@@ -47,6 +47,7 @@ public class ProceduralIsland : MonoBehaviour, ILoading
                     var newChunk = Instantiate(IslandChunkPrefab, transform.position, Quaternion.identity, transform);
                     newChunk.GetComponent<MeshFilter>().mesh = subMesh;
                     newChunk.GetComponent<MeshCollider>().sharedMesh = subMesh;
+                    //yield return StartCoroutine(newChunk.GetComponent<ProceduralGrass>().Generate(new Vector2Int(chunkSize, chunkSize)));
                     StartCoroutine(newChunk.GetComponent<ProceduralGrass>().Generate(new Vector2Int(chunkSize, chunkSize)));
                 }
             }
@@ -65,6 +66,7 @@ public class ProceduralIsland : MonoBehaviour, ILoading
         yield return pause;
         {
             mesh.uv = mesh.vertices.Select(meshVertex => new Vector2(meshVertex.x / size.x, meshVertex.z / size.y)).ToArray();
+            //mesh.uv = GetUv(startX, startY, sizeX, sizeY);
         }
         yield return pause;
         //{
@@ -110,9 +112,26 @@ public class ProceduralIsland : MonoBehaviour, ILoading
             }
             vert += 1;
         }
-
         return triangles;
     }
+
+    //private Vector2[] GetUv(int startX, int startY, int sizeX, int sizeY)
+    //{
+    //    var _SizeX = sizeX - startX;
+    //    var _SizeY = sizeY - startY;
+    //    Vector2[] uv = new Vector2[(_SizeX + 1) * (_SizeY + 1)];
+    //    for (int y = 0; y < _SizeY; y += 2)
+    //    {
+    //        for (int x = 0; x < _SizeX; x += 2)
+    //        {
+    //            uv[y * _SizeX + x + 0] = new Vector2(0, 0);
+    //            uv[y * _SizeX + x + 1] = new Vector2(1, 0);
+    //            uv[(y + 1) * _SizeX + x + 0] = new Vector2(1, 0);
+    //            uv[(y + 1) * _SizeX + x + 1] = new Vector2(1, 1);
+    //        }
+    //    }
+    //    return uv;
+    //}
 
     private float GetY(int z, int x)
     {

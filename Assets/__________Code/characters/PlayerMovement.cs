@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour, IMovement
     Rigidbody Rigidbody;
     GroundDetector GroundDetector;
 
+    bool wasInAir = false;
     Vector4 input;
     public Vector3 CurrentInput => input;
 
@@ -46,8 +47,21 @@ public class PlayerMovement : MonoBehaviour, IMovement
         }
     }
 
+    void Update()
+    {
+        if (!PlayerSinglton.PlayerCanMove) return;
+
+        if (wasInAir && GroundDetector.onGround)
+        {
+            Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, 0, Rigidbody.velocity.z);
+        }
+        wasInAir = !GroundDetector.onGround;
+    }
+
     void FixedUpdate()
     {
+        if (!PlayerSinglton.PlayerCanMove) return;
+
         var input = CreateInput();
 
         if (GroundDetector.onGround)

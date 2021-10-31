@@ -13,14 +13,14 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Characters
+  - GroundCollider
+  - GrounDetector
   - Platforms
-  - Items
   - Attack
   - Particles
   - HitBox
   - Sight
-  - GrounDetector
+  - 
   - Player
   - water
   - waterCollider

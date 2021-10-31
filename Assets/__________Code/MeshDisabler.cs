@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeshDisabler : MonoBehaviour
 {
-    public SkinnedMeshRenderer[] controlledMeshes;
+    public Renderer[] controlledMeshes;
     public float rendDistance = 40;
     public Vector3[] togglePoints;
     public float rendDotAngle = .6f;
@@ -23,7 +23,7 @@ public class MeshDisabler : MonoBehaviour
         while (true)
         {
             bool playerHitted = false;
-            var target = PlayerSinglton.PlayerPosition + Vector3.up * 2;
+            var target = PlayerSinglton.PlayerPosition;
 
             foreach (var togglePoint in togglePoints)
             {
@@ -92,7 +92,13 @@ public class MeshDisabler : MonoBehaviour
     {
         foreach (var togglePoint in togglePoints)
         {
+            Gizmos.color = Color.white;
             Gizmos.DrawLine(transform.position, transform.position + togglePoint);
+            if (PlayerSinglton.IsGood)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(transform.position + togglePoint, PlayerSinglton.PlayerPosition);
+            }
         }
     }
 }

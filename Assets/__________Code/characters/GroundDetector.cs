@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
-    public bool onGround => staysOnGround && onGroundTime > .05f;
+    public float triggerTime = .05f;
+
+    public bool onGround => triggerTime > 0 ?
+        staysOnGround && onGroundTime > triggerTime :
+        staysOnGround;
     bool staysOnGround = false;
     float onGroundTime => Time.timeSinceLevelLoad - onGroundStart;
     float onGroundStart = 100;
